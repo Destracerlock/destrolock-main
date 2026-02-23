@@ -1,0 +1,33 @@
+{
+  "manifest_version": 2,
+  "name": "Lensflow Travel Theme",
+  "version": "0.1.0",
+  "description": "Custom Chrome theme with personal travel photos (no people).",
+  "theme": {
+    "images": {
+      "theme_frame": "assets/images/frame.jpg",
+      "theme_ntp_background": "assets/images/ntp-background.jpg"
+    },
+    "colors": {
+      "frame": [31, 42, 68],
+      "toolbar": [245, 246, 250],
+      "tab_background_text": [20, 20, 20],
+      "tab_text": [30, 30, 30],
+      "bookmark_text": [31, 42, 68],
+      "ntp_text": [255, 255, 255],
+      "ntp_link": [210, 224, 255],
+      "ntp_section": [31, 42, 68],
+      "ntp_section_text": [255, 255, 255],
+      "ntp_section_link": [210, 224, 255]
+    },
+    "properties": {
+      "ntp_background_alignment": "center",
+      "ntp_background_repeat": "no-repeat"
+    }
+  },
+  "icons": {
+    "16": "assets/icons/icon16.png",
+    "48": "assets/icons/icon48.png",
+    "128": "assets/icons/icon128.png"
+  }
+}
