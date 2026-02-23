@@ -1,0 +1,91 @@
+:root {
+  --bg: #0f1728;
+  --panel: rgba(10, 18, 34, 0.58);
+  --panel-border: rgba(255, 255, 255, 0.22);
+  --text: #f8fbff;
+  --muted: #c5d3ec;
+  --accent: #94b3ff;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  color: var(--text);
+  font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  background:
+    linear-gradient(rgba(10, 14, 25, 0.38), rgba(10, 14, 25, 0.62)),
+    url("../assets/images/ntp-background.jpg") center/cover no-repeat fixed,
+    var(--bg);
+}
+
+.top-banner {
+  height: 84px;
+  background:
+    linear-gradient(rgba(8, 12, 24, 0.35), rgba(8, 12, 24, 0.65)),
+    url("../assets/images/frame.jpg") center/cover no-repeat;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+  backdrop-filter: blur(2px);
+}
+
+.content {
+  width: min(960px, 92vw);
+  margin: clamp(24px, 5vh, 56px) auto;
+  background: var(--panel);
+  border: 1px solid var(--panel-border);
+  border-radius: 22px;
+  padding: clamp(20px, 4vw, 38px);
+  backdrop-filter: blur(8px);
+}
+
+.hero h1 { margin: 0; font-size: clamp(2rem, 4vw, 3rem); }
+.hero p { margin: 8px 0 24px; color: var(--muted); }
+
+.search {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 10px;
+  margin-bottom: 24px;
+}
+
+.search input {
+  height: 48px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  padding: 0 14px;
+  font-size: 1rem;
+  background: rgba(255, 255, 255, 0.88);
+  color: #0e1730;
+}
+
+.search button {
+  height: 48px;
+  border: 0;
+  border-radius: 14px;
+  padding: 0 18px;
+  font-weight: 600;
+  cursor: pointer;
+  background: var(--accent);
+  color: #0f1c3c;
+}
+
+.quicklinks-header h2 { margin: 0 0 12px; color: var(--muted); font-size: 1rem; }
+.quicklinks {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 10px;
+}
+
+.quicklink {
+  display: block;
+  text-decoration: none;
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 12px;
+  padding: 12px;
+}
+
+.quicklink .title { font-size: .95rem; font-weight: 600; margin-bottom: 4px; }
+.quicklink .url { font-size: .8rem; color: var(--muted); word-break: break-all; }

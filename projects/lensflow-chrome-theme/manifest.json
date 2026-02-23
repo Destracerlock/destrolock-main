@@ -1,0 +1,14 @@
+{
+  "manifest_version": 3,
+  "name": "Lensflow New Tab",
+  "version": "0.2.0",
+  "description": "Lensflow-style New Tab with your own travel photos, search, and quick links.",
+  "icons": {
+    "16": "assets/icons/icon16.png",
+    "48": "assets/icons/icon48.png",
+    "128": "assets/icons/icon128.png"
+  },
+  "chrome_url_overrides": {
+    "newtab": "newtab/newtab.html"
+  }
+}
