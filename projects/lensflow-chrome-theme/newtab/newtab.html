@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lensflow New Tab</title>
+  <link rel="stylesheet" href="newtab.css" />
+</head>
+<body>
+  <header class="top-banner" aria-hidden="true"></header>
+
+  <main class="shell">
+    <form id="searchForm" class="search" action="https://www.google.com/search" method="get">
+      <input
+        id="searchInput"
+        name="q"
+        type="text"
+        placeholder="Search Google"
+        autocomplete="off"
+        aria-label="Search Google"
+      />
+    </form>
+
+    <nav>
+      <div id="quicklinks" class="quicklinks" aria-label="Quick links"></div>
+    </nav>
+  </main>
+
+  <script src="newtab.js"></script>
+</body>
+</html>

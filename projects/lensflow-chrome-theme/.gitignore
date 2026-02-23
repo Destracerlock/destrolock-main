@@ -1,0 +1,7 @@
+# Generated runtime images/icons (not committed to keep PRs binary-safe)
+assets/images/*.jpg
+assets/icons/*.png
+
+# Keep docs in those folders tracked
+!assets/images/README.md
+!assets/icons/README.md
