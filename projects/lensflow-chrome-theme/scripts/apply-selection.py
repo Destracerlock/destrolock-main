@@ -19,6 +19,7 @@ def ensure_jpeg(path: Path) -> None:
 
 
 def choose_images(selected: list[str], favorite: str | None) -> tuple[str, str, list[str]]:
+def choose_images(selected: list[str], favorite: str | None) -> tuple[str, str]:
     if not selected:
         raise ValueError("No images selected.")
 
@@ -30,6 +31,7 @@ def choose_images(selected: list[str], favorite: str | None) -> tuple[str, str, 
     ntp = ordered[0]
     frame = ordered[1] if len(ordered) > 1 else ordered[0]
     return ntp, frame, ordered
+    return ntp, frame
 
 
 def main() -> int:
@@ -49,6 +51,7 @@ def main() -> int:
         raise SystemExit("Invalid selection.json: 'favorite' must be null or filename string")
 
     ntp_name, frame_name, ordered = choose_images(selected, favorite)
+    ntp_name, frame_name = choose_images(selected, favorite)
 
     ntp_src = GALLERY / ntp_name
     frame_src = GALLERY / frame_name
@@ -86,6 +89,7 @@ def main() -> int:
             "selection_json": str(OUT_SELECTION.relative_to(ROOT)),
             "count": len(ordered),
         },
+        }
     }
     print(json.dumps(result, indent=2))
     return 0
