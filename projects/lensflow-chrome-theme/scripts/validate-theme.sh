@@ -61,6 +61,15 @@ missing_icon_keys = [k for k in required_icon_keys if k not in icons]
 if missing_icon_keys:
     raise SystemExit(f"Missing required icon keys: {missing_icon_keys}")
 
+selection_path = root_dir / "newtab/selection.json"
+if selection_path.exists():
+    try:
+        sel = json.loads(selection_path.read_text(encoding='utf-8'))
+    except json.JSONDecodeError as exc:
+        raise SystemExit(f"newtab/selection.json invalid JSON: {exc}")
+    if not isinstance(sel.get("selected", []), list):
+        raise SystemExit("newtab/selection.json must contain list key 'selected'")
+
 paths_to_check = {
     "newtab_html": newtab,
     "newtab_css": "newtab/newtab.css",

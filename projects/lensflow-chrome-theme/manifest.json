@@ -2,6 +2,9 @@
   "manifest_version": 3,
   "name": "Lensflow New Tab",
   "version": "0.2.0",
+  "description": "Lensflow travel new tab with personal photos (no people).",
+  "chrome_url_overrides": {
+    "newtab": "newtab/newtab.html"
   "description": "Lensflow-style New Tab with your own travel photos, search, and quick links.",
   "manifest_version": 2,
   "name": "Lensflow Travel Theme",

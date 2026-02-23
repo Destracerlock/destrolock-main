@@ -9,6 +9,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 GALLERY = ROOT / "assets" / "gallery"
 OUT_IMAGES = ROOT / "assets" / "images"
+OUT_SELECTION = ROOT / "newtab" / "selection.json"
 
 
 def ensure_jpeg(path: Path) -> None:
@@ -17,6 +18,7 @@ def ensure_jpeg(path: Path) -> None:
         raise ValueError(f"{path.name} is not a JPEG file. Please use JPG/JPEG images for now.")
 
 
+def choose_images(selected: list[str], favorite: str | None) -> tuple[str, str, list[str]]:
 def choose_images(selected: list[str], favorite: str | None) -> tuple[str, str]:
     if not selected:
         raise ValueError("No images selected.")
@@ -28,6 +30,7 @@ def choose_images(selected: list[str], favorite: str | None) -> tuple[str, str]:
 
     ntp = ordered[0]
     frame = ordered[1] if len(ordered) > 1 else ordered[0]
+    return ntp, frame, ordered
     return ntp, frame
 
 
@@ -47,6 +50,7 @@ def main() -> int:
     if favorite is not None and not isinstance(favorite, str):
         raise SystemExit("Invalid selection.json: 'favorite' must be null or filename string")
 
+    ntp_name, frame_name, ordered = choose_images(selected, favorite)
     ntp_name, frame_name = choose_images(selected, favorite)
 
     ntp_src = GALLERY / ntp_name
@@ -64,10 +68,27 @@ def main() -> int:
     shutil.copy2(ntp_src, OUT_IMAGES / "ntp-background.jpg")
     shutil.copy2(frame_src, OUT_IMAGES / "frame.jpg")
 
+    OUT_SELECTION.parent.mkdir(parents=True, exist_ok=True)
+    OUT_SELECTION.write_text(
+        json.dumps(
+            {
+                "selected": ordered,
+                "favorite": favorite,
+            },
+            indent=2,
+        ) + "\n",
+        encoding="utf-8",
+    )
+
     result = {
         "applied": {
             "theme_ntp_background": ntp_name,
             "theme_frame": frame_name,
+        },
+        "rotation": {
+            "selection_json": str(OUT_SELECTION.relative_to(ROOT)),
+            "count": len(ordered),
+        },
         }
     }
     print(json.dumps(result, indent=2))
