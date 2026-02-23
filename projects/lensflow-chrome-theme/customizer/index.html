@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lensflow Theme Customizer</title>
+  <style>
+    body { font-family: system-ui, sans-serif; margin: 24px; background:#f7f8fb; color:#1f2a44; }
+    h1 { margin-top:0; }
+    .grid { display:grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap:16px; }
+    .card { background:#fff; border:1px solid #d9dfea; border-radius:12px; padding:12px; box-shadow:0 1px 2px rgba(0,0,0,.05); }
+    img { width:100%; aspect-ratio:16/9; object-fit:cover; border-radius:8px; border:1px solid #e9edf5; }
+    .row { display:flex; gap:10px; margin-top:10px; align-items:center; }
+    .muted { color:#5f6d8c; font-size:14px; }
+    .actions { margin:16px 0; display:flex; gap:10px; flex-wrap:wrap; }
+    button { border:none; background:#1f2a44; color:#fff; border-radius:8px; padding:10px 14px; cursor:pointer; }
+    button.secondary { background:#5f6d8c; }
+    code { background:#eef2f8; padding:2px 6px; border-radius:6px; }
+  </style>
+</head>
+<body>
+  <h1>Lensflow Theme Customizer</h1>
+  <p class="muted">Bilder an/abwählen und optional Favorit setzen. Der Favorit wird zuerst verwendet (NTP), das zweite ausgewählte Bild wird Frame. Wenn nur 1 Bild gewählt ist, wird es für beides genutzt.</p>
+  <div class="actions">
+    <button id="save">Auswahl als JSON herunterladen</button>
+    <button class="secondary" id="selectAll">Alle auswählen</button>
+    <button class="secondary" id="clearAll">Alle abwählen</button>
+  </div>
+  <div id="list" class="grid"></div>
+
+<script>
+const images = [];
+const list = document.getElementById('list');
+
+if (!images.length) {
+  list.innerHTML = '<p>Keine Bilder in <code>assets/gallery</code> gefunden. Bitte dort JPG/JPEG ablegen und Script erneut ausführen.</p>';
+}
+
+function buildCard(name) {
+  const card = document.createElement('div');
+  card.className = 'card';
+
+  const img = document.createElement('img');
+  img.src = `../assets/gallery/${name}`;
+  img.alt = name;
+
+  const title = document.createElement('div');
+  title.textContent = name;
+  title.style.marginTop = '8px';
+  title.style.fontWeight = '600';
+
+  const row1 = document.createElement('label');
+  row1.className = 'row';
+  const sel = document.createElement('input');
+  sel.type = 'checkbox';
+  sel.dataset.role = 'selected';
+  sel.dataset.name = name;
+  row1.append(sel, document.createTextNode(' Für Theme auswählen'));
+
+  const row2 = document.createElement('label');
+  row2.className = 'row';
+  const fav = document.createElement('input');
+  fav.type = 'radio';
+  fav.name = 'favorite';
+  fav.dataset.role = 'favorite';
+  fav.dataset.name = name;
+  row2.append(fav, document.createTextNode(' Als Favorit priorisieren'));
+
+  card.append(img, title, row1, row2);
+  return card;
+}
+
+images.forEach(n => list.append(buildCard(n)));
+
+function state() {
+  const selected = [...document.querySelectorAll('input[data-role="selected"]')]
+    .filter(i => i.checked)
+    .map(i => i.dataset.name);
+  const favorite = document.querySelector('input[data-role="favorite"]:checked')?.dataset.name || null;
+  return { selected, favorite };
+}
+
+document.getElementById('save').addEventListener('click', () => {
+  const data = state();
+  const blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'selection.json';
+  a.click();
+  URL.revokeObjectURL(a.href);
+});
+
+document.getElementById('selectAll').addEventListener('click', () => {
+  document.querySelectorAll('input[data-role="selected"]').forEach(i => i.checked = true);
+});
+
+document.getElementById('clearAll').addEventListener('click', () => {
+  document.querySelectorAll('input[data-role="selected"]').forEach(i => i.checked = false);
+  document.querySelectorAll('input[data-role="favorite"]').forEach(i => i.checked = false);
+});
+</script>
+</body>
+</html>
