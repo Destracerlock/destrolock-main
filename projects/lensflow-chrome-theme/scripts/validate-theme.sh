@@ -12,6 +12,7 @@ fi
 python3 - <<'PY' "$MANIFEST"
 import json
 import sys
+import json, sys
 from pathlib import Path
 
 manifest_path = Path(sys.argv[1])
@@ -27,6 +28,8 @@ if data["manifest_version"] != 2:
     raise SystemExit("Chrome themes must use manifest_version 2")
 
 images = data.get("theme", {}).get("images", {})
+images = data.get("theme", {}).get("images", {})
+icons = data.get("icons", {})
 required_image_keys = ["theme_frame", "theme_ntp_background"]
 missing_image_keys = [k for k in required_image_keys if k not in images]
 if missing_image_keys:
@@ -39,6 +42,10 @@ if icons:
     missing_icon_keys = [k for k in required_icon_keys if k not in icons]
     if missing_icon_keys:
         raise SystemExit(f"Missing required icon keys (icons block is present): {missing_icon_keys}")
+required_icon_keys = ["16", "48", "128"]
+missing_icon_keys = [k for k in required_icon_keys if k not in icons]
+if missing_icon_keys:
+    raise SystemExit(f"Missing required icon keys: {missing_icon_keys}")
 
 paths_to_check = {
     "theme_frame": images["theme_frame"],
@@ -72,6 +79,16 @@ for label, rel_path in paths_to_check.items():
         invalid_signatures.append((label, rel_path, "expected JPEG header"))
     if target.suffix.lower() == ".png" and header != b"\x89PNG\r\n\x1a\n":
         invalid_signatures.append((label, rel_path, "expected PNG header"))
+    "icon16": icons["16"],
+    "icon48": icons["48"],
+    "icon128": icons["128"],
+}
+
+missing_files = []
+for label, rel_path in paths_to_check.items():
+    target = (root_dir / rel_path).resolve()
+    if not target.exists():
+        missing_files.append((label, rel_path))
 
 if missing_files:
     formatted = ", ".join(f"{label} -> {path}" for label, path in missing_files)
@@ -86,6 +103,7 @@ if invalid_signatures:
     raise SystemExit(f"Invalid image file signatures: {formatted}")
 
 print("manifest.json is valid and referenced theme assets look usable")
+print("manifest.json is valid and required theme assets exist")
 PY
 
 echo "Validation passed: $MANIFEST"
